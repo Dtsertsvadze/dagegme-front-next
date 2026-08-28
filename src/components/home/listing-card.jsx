@@ -1,9 +1,8 @@
-import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { localizePath } from '@/i18n/config.js'
 import { useAppPreferences } from '../../state/app-preferences.js'
 import { getLocalizedValue } from '../../utils/get-localized-value.js'
-import { ListingDetailModal } from './listing-detail-modal.jsx'
 
 function HeartIcon() {
   return (
@@ -23,7 +22,6 @@ function DetailsIcon() {
 }
 
 export function ListingCard({ item, language }) {
-  const [isDetailsOpen, setIsDetailsOpen] = useState(false)
   const { isInWishlist, toggleWishlist } = useAppPreferences()
   const categoryName = item.categoryName[language]
   const itemTitle = getLocalizedValue(item.title, language)
@@ -77,30 +75,14 @@ export function ListingCard({ item, language }) {
           {itemDescription || fallbackDescription}
         </p>
 
-        {item.detailsHref ? (
-          <Link className="listing-card__action" href={item.detailsHref}>
-            <span>{actionLabel}</span>
-            <DetailsIcon />
-          </Link>
-        ) : (
-          <button
-            type="button"
-            className="listing-card__action"
-            onClick={() => setIsDetailsOpen(true)}
-          >
-            <span>{actionLabel}</span>
-            <DetailsIcon />
-          </button>
-        )}
+        <Link
+          className="listing-card__action"
+          href={localizePath(item.detailsHref, language)}
+        >
+          <span>{actionLabel}</span>
+          <DetailsIcon />
+        </Link>
       </div>
-
-      {isDetailsOpen ? (
-        <ListingDetailModal
-          item={item}
-          language={language}
-          onClose={() => setIsDetailsOpen(false)}
-        />
-      ) : null}
     </article>
   )
 }

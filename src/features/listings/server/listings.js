@@ -5,6 +5,7 @@ import {
 } from '../lib/normalize-listing.mjs'
 
 const fallbackApiBaseUrl = 'https://api.dagegme.com/api'
+const providerRevalidateSeconds = 300
 
 const apiBaseUrl = (
   process.env.API_BASE_URL ||
@@ -12,13 +13,20 @@ const apiBaseUrl = (
   fallbackApiBaseUrl
 ).replace(/\/$/, '')
 
-async function fetchJson(path) {
+async function fetchJson(path, { allowNotFound = false, tags = [] } = {}) {
   const response = await fetch(`${apiBaseUrl}/${path}`, {
-    cache: 'no-store',
     headers: {
       Accept: 'application/json',
     },
+    next: {
+      revalidate: providerRevalidateSeconds,
+      tags: ['providers', ...tags],
+    },
   })
+
+  if (allowNotFound && response.status === 404) {
+    return null
+  }
 
   if (!response.ok) {
     throw new Error(`API request failed with status ${response.status}.`)
@@ -28,7 +36,9 @@ async function fetchJson(path) {
 }
 
 async function fetchCategory(category) {
-  const data = await fetchJson(category.endpoint)
+  const data = await fetchJson(category.endpoint, {
+    tags: [`providers:${category.id}`],
+  })
   const providers = Array.isArray(data) ? data : []
 
   return {
@@ -57,8 +67,23 @@ export async function fetchCategoryListings(category) {
   return result.items
 }
 
+export async function fetchListing(category, providerId) {
+  const data = await fetchJson(
+    `${category.endpoint}/${encodeURIComponent(providerId)}`,
+    {
+      allowNotFound: true,
+      tags: [
+        `providers:${category.id}`,
+        `provider:${category.id}:${providerId}`,
+      ],
+    },
+  )
+
+  return data ? normalizeListing(category, data) : null
+}
+
 export async function fetchVipListings() {
-  const data = await fetchJson('vips')
+  const data = await fetchJson('vips', { tags: ['providers:vips'] })
 
   if (!Array.isArray(data)) {
     return []

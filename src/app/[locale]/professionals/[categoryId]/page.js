@@ -1,16 +1,26 @@
 import { redirect } from 'next/navigation'
 import { homeCategories } from '@/content/home-categories.js'
+import { siteCopy } from '@/content/site-copy.js'
 import { ProfessionCategoryPage } from '@/features/listings/profession-category-page.jsx'
 import { fetchCategoryListings } from '@/features/listings/server/listings.js'
 
-export const dynamic = 'force-dynamic'
-
 export async function generateMetadata({ params }) {
-  const { categoryId } = await params
+  const { categoryId, locale } = await params
   const category = homeCategories.find((item) => item.id === categoryId)
+  const copy = (siteCopy[locale] ?? siteCopy.ka).professionals
+  const title =
+    copy.categoryTitles[categoryId] || category?.labels[locale] || copy.title
 
   return {
-    title: category?.labels.en || 'Professionals',
+    title,
+    description: copy.categoryPage.subtitle,
+    alternates: {
+      canonical: `/${locale}/professionals/${categoryId}`,
+      languages: {
+        en: `/en/professionals/${categoryId}`,
+        ka: `/ka/professionals/${categoryId}`,
+      },
+    },
   }
 }
 
@@ -25,11 +35,11 @@ async function getPageData(category) {
 }
 
 export default async function Page({ params }) {
-  const { categoryId } = await params
+  const { categoryId, locale } = await params
   const category = homeCategories.find((item) => item.id === categoryId)
 
   if (!category) {
-    redirect('/professionals')
+    redirect(`/${locale}/professionals`)
   }
 
   const pageData = await getPageData(category)

@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { ListingCard } from '@/components/home/listing-card.jsx'
 import { siteCopy } from '@/content/site-copy.js'
+import { localizePath } from '@/i18n/config.js'
 import { useAppPreferences } from '@/state/app-preferences.js'
 
 function BackIcon() {
@@ -21,7 +22,10 @@ export function ProfessionCategoryPage({ category, items, hasError }) {
 
   return (
     <div className="profession-category-page">
-      <Link className="profession-category-page__back" href="/professionals">
+      <Link
+        className="profession-category-page__back"
+        href={localizePath('/professionals', language)}
+      >
         <BackIcon />
         <span>{copy.categoryPage.back}</span>
       </Link>

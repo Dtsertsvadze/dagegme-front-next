@@ -1,8 +1,6 @@
 import { HomePage } from '@/features/home/home-page.jsx'
 import { fetchVipListings } from '@/features/listings/server/listings.js'
 
-export const dynamic = 'force-dynamic'
-
 async function getPageData() {
   try {
     const items = await fetchVipListings()

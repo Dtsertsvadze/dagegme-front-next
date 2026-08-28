@@ -15,6 +15,7 @@ export type Provider = {
 
 export type Listing = {
   id: string;
+  providerId: number | string;
   categoryId: string;
   categoryName: LocalizedText;
   title: LocalizedText | string;
@@ -25,6 +26,6 @@ export type Listing = {
   photos: string[];
   vip: boolean;
   sortOrder: number | null;
-  detailsHref?: string;
+  detailsHref: string;
   vipOrder?: number | null;
 };

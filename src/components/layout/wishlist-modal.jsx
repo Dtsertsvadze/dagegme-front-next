@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 import Image from 'next/image'
+import Link from 'next/link'
+import { localizePath } from '../../i18n/config.js'
 import { useAppPreferences } from '../../state/app-preferences.js'
 import { getLocalizedValue } from '../../utils/get-localized-value.js'
 
@@ -75,6 +77,7 @@ export function WishlistModal({ copy, isOpen, onClose }) {
                 language={language}
                 copy={copy}
                 onRemove={removeFromWishlist}
+                onNavigate={onClose}
               />
             ))}
           </div>
@@ -84,7 +87,7 @@ export function WishlistModal({ copy, isOpen, onClose }) {
   )
 }
 
-function WishlistItem({ item, language, copy, onRemove }) {
+function WishlistItem({ item, language, copy, onRemove, onNavigate }) {
   const title = getLocalizedValue(item.title, language)
   const description = getLocalizedValue(item.description, language)
 
@@ -107,7 +110,14 @@ function WishlistItem({ item, language, copy, onRemove }) {
           <button type="button" onClick={() => onRemove(item.id)}>
             {copy.removeFromWishlist}
           </button>
-          {item.href ? (
+          {item.detailsHref ? (
+            <Link
+              href={localizePath(item.detailsHref, language)}
+              onClick={onNavigate}
+            >
+              {copy.viewListing}
+            </Link>
+          ) : item.href ? (
             <a href={item.href} target="_blank" rel="noreferrer">
               {copy.viewListing}
             </a>

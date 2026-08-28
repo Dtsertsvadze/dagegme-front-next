@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { localizePath } from '@/i18n/config.js'
 import { CategoryIcon } from './category-icon.jsx'
 
 export function CategoryGrid({ categories, language }) {
@@ -15,7 +16,7 @@ export function CategoryGrid({ categories, language }) {
           <Link
             key={category.id}
             className="category-card"
-            href={`/professionals/${category.id}`}
+            href={localizePath(`/professionals/${category.id}`, language)}
           >
             <CategoryIcon icon={category.icon} />
             <span className="category-card__label">

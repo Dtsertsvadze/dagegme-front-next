@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
+import { localizePath } from '@/i18n/config.js'
 import { ListingCard } from './listing-card.jsx'
 
 function ArrowIcon({ direction }) {
@@ -151,7 +152,10 @@ export function ListingGrid({
       <div className="section-heading">
         <h2 className="section-heading__title">{title}</h2>
         {seeAllHref ? (
-          <Link className="section-heading__action" href={seeAllHref}>
+          <Link
+            className="section-heading__action"
+            href={localizePath(seeAllHref, language)}
+          >
             {clearLabel}
           </Link>
         ) : activeCategory ? (

@@ -2,13 +2,15 @@
 
 import { useEffect, useMemo, useSyncExternalStore } from 'react'
 import {
+  localeCookieName,
+  replacePathLocale,
+} from '@/i18n/config.js'
+import {
   AppPreferencesContext,
-  LANGUAGES,
   STORAGE_KEYS,
   THEMES,
 } from './app-preferences.js'
 
-const LANGUAGE_PREFERENCE_VERSION = 'georgian-default-v1'
 const PREFERENCES_EVENT = 'app-preferences-change'
 const EMPTY_WISHLIST = '[]'
 
@@ -42,23 +44,6 @@ function getThemeSnapshot() {
     : THEMES.LIGHT
 }
 
-function getLanguageSnapshot() {
-  const storedVersion = window.localStorage.getItem(
-    STORAGE_KEYS.languageVersion,
-  )
-  const storedLanguage = window.localStorage.getItem(STORAGE_KEYS.language)
-
-  if (
-    storedVersion === LANGUAGE_PREFERENCE_VERSION &&
-    (storedLanguage === LANGUAGES.ENGLISH ||
-      storedLanguage === LANGUAGES.GEORGIAN)
-  ) {
-    return storedLanguage
-  }
-
-  return LANGUAGES.GEORGIAN
-}
-
 function getWishlistSnapshot() {
   return window.localStorage.getItem(STORAGE_KEYS.wishlist) || EMPTY_WISHLIST
 }
@@ -87,19 +72,15 @@ function createWishlistItem(item) {
     description: item.description,
     imageUrl: item.imageUrl,
     href: item.href,
+    detailsHref: item.detailsHref,
   }
 }
 
-export function AppProvider({ children }) {
+export function AppProvider({ children, language }) {
   const theme = useSyncExternalStore(
     subscribeToPreferences,
     getThemeSnapshot,
     () => THEMES.LIGHT,
-  )
-  const language = useSyncExternalStore(
-    subscribeToPreferences,
-    getLanguageSnapshot,
-    () => LANGUAGES.GEORGIAN,
   )
   const wishlistSnapshot = useSyncExternalStore(
     subscribeToPreferences,
@@ -126,11 +107,11 @@ export function AppProvider({ children }) {
   }
 
   function setLanguage(nextLanguage) {
-    window.localStorage.setItem(
-      STORAGE_KEYS.languageVersion,
-      LANGUAGE_PREFERENCE_VERSION,
-    )
-    writePreference(STORAGE_KEYS.language, nextLanguage)
+    document.cookie = `${localeCookieName}=${nextLanguage}; Max-Age=31536000; Path=/; SameSite=Lax`
+    const currentPath = `${window.location.pathname}${window.location.search}${window.location.hash}`
+    // Root layouts persist across soft navigation, so locale changes must reload
+    // the document to keep <html lang>, shell copy, and route metadata in sync.
+    window.location.assign(replacePathLocale(currentPath, nextLanguage))
   }
 
   function setWishlist(nextWishlist) {

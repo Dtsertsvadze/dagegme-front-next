@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { siteCopy } from '../../content/site-copy.js'
+import { localizePath } from '../../i18n/config.js'
 import { useAppPreferences } from '../../state/app-preferences.js'
 import { SiteBrand } from './site-brand.jsx'
 
@@ -20,14 +21,14 @@ export function SiteFooter() {
     <footer id="site-footer" className="site-footer">
       <div className="site-footer__main">
         <div className="site-footer__brand">
-          <SiteBrand label={copy.brand} />
+          <SiteBrand label={copy.brand} language={language} />
           <p>{copy.footer.tagline}</p>
         </div>
 
         <nav className="site-footer__navigation" aria-label={copy.footer.navigationLabel}>
           <p className="site-footer__label">{copy.footer.navigationLabel}</p>
           {copy.footer.links.map((link) => (
-            <Link key={link.href} href={link.href}>
+            <Link key={link.href} href={localizePath(link.href, language)}>
               {link.label}
             </Link>
           ))}
@@ -37,7 +38,7 @@ export function SiteFooter() {
           <span className="site-footer__spark" aria-hidden="true">✦</span>
           <h2>{copy.footer.calloutTitle}</h2>
           <p>{copy.footer.calloutText}</p>
-          <Link href="/#categories">
+          <Link href={localizePath('/#categories', language)}>
             <span>{copy.footer.calloutAction}</span>
             <ArrowIcon />
           </Link>

@@ -1,6 +1,8 @@
+'use client'
+
 import { useEffect, useState } from 'react'
-import { createPortal } from 'react-dom'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import { siteCopy } from '../../content/site-copy.js'
 import { useAppPreferences } from '../../state/app-preferences.js'
 import { getLocalizedValue } from '../../utils/get-localized-value.js'
@@ -57,7 +59,8 @@ function getNextImageIndex(currentIndex, direction, imageCount) {
   return (currentIndex + direction + imageCount) % imageCount
 }
 
-export function ListingDetailModal({ item, language, onClose }) {
+export function ProviderDetails({ item, language, mode = 'page' }) {
+  const router = useRouter()
   const { isInWishlist, toggleWishlist } = useAppPreferences()
   const copy = siteCopy[language].listingDetails
   const title = getLocalizedValue(item.title, language)
@@ -83,6 +86,12 @@ export function ListingDetailModal({ item, language, onClose }) {
   const profileImageOffset = item.imageUrl ? 1 : 0
   const [expandedImageIndex, setExpandedImageIndex] = useState(null)
   const profileImage = viewerImages[0] || ''
+  const isModal = mode === 'modal'
+  const Heading = isModal ? 'h2' : 'h1'
+
+  function closeModal() {
+    router.back()
+  }
 
   function moveExpandedImage(direction) {
     setExpandedImageIndex((currentIndex) =>
@@ -95,8 +104,8 @@ export function ListingDetailModal({ item, language, onClose }) {
       if (event.key === 'Escape') {
         if (expandedImageIndex !== null) {
           setExpandedImageIndex(null)
-        } else {
-          onClose()
+        } else if (isModal) {
+          router.back()
         }
       }
 
@@ -113,34 +122,47 @@ export function ListingDetailModal({ item, language, onClose }) {
       }
     }
 
+    const shouldLockBody = isModal || expandedImageIndex !== null
     const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
+
+    if (shouldLockBody) {
+      document.body.style.overflow = 'hidden'
+    }
+
     window.addEventListener('keydown', handleKeyDown)
 
     return () => {
-      document.body.style.overflow = previousOverflow
+      if (shouldLockBody) {
+        document.body.style.overflow = previousOverflow
+      }
       window.removeEventListener('keydown', handleKeyDown)
     }
-  }, [expandedImageIndex, onClose, viewerImages.length])
+  }, [expandedImageIndex, isModal, router, viewerImages.length])
 
-  return createPortal(
-    <div className="listing-detail-modal" role="presentation" onMouseDown={onClose}>
+  return (
+    <div
+      className={isModal ? 'listing-detail-modal' : 'provider-detail-page'}
+      role={isModal ? 'presentation' : undefined}
+      onMouseDown={isModal ? closeModal : undefined}
+    >
       <section
         className="listing-detail-modal__panel"
-        role="dialog"
-        aria-modal="true"
+        role={isModal ? 'dialog' : undefined}
+        aria-modal={isModal ? 'true' : undefined}
         aria-labelledby={`listing-detail-title-${item.id}`}
         onMouseDown={(event) => event.stopPropagation()}
       >
-        <button
-          type="button"
-          className="listing-detail-modal__close"
-          aria-label={copy.close}
-          onClick={onClose}
-          autoFocus
-        >
-          <CloseIcon />
-        </button>
+        {isModal ? (
+          <button
+            type="button"
+            className="listing-detail-modal__close"
+            aria-label={copy.close}
+            onClick={closeModal}
+            autoFocus
+          >
+            <CloseIcon />
+          </button>
+        ) : null}
 
         <div className="listing-detail-modal__media">
           {profileImage ? (
@@ -176,7 +198,7 @@ export function ListingDetailModal({ item, language, onClose }) {
 
         <div className="listing-detail-modal__content">
           <p className="listing-detail-modal__eyebrow">{categoryName}</p>
-          <h2 id={`listing-detail-title-${item.id}`}>{title}</h2>
+          <Heading id={`listing-detail-title-${item.id}`}>{title}</Heading>
 
           <div className="listing-detail-modal__description">
             <p>{description || copy.descriptionFallback}</p>
@@ -305,7 +327,6 @@ export function ListingDetailModal({ item, language, onClose }) {
           </div>
         </div>
       ) : null}
-    </div>,
-    document.body,
+    </div>
   )
 }

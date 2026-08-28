@@ -3,8 +3,6 @@
 import { createContext, useContext } from 'react'
 
 export const STORAGE_KEYS = {
-  language: 'app-language',
-  languageVersion: 'app-language-version',
   theme: 'app-theme',
   wishlist: 'app-wishlist',
 }

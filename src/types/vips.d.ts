@@ -18,7 +18,8 @@ export type VipProviderType =
   | 'band'
   | 'dj'
   | 'presenter'
-  | 'studio';
+  | 'studio'
+  | 'rental-car';
 
 export type VipCarouselItem = {
   provider_type: VipProviderType;

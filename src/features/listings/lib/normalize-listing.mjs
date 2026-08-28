@@ -77,11 +77,13 @@ export function normalizeListing(category, item) {
 
   return {
     id: `${category.id}-${item.id}`,
+    providerId: item.id,
     categoryId: category.id,
     categoryName: category.labels,
     title: normalizeTitle(category, item),
     description: normalizeLocalizedField(item, 'description'),
     imageUrl: item.profile_photo_url || '',
+    detailsHref: `/professionals/${category.id}/${item.id}`,
     href: links[0] || '',
     links,
     vip: Boolean(item.vip),
@@ -110,12 +112,13 @@ export function normalizeVipCarouselItem(categories, item) {
 
   return {
     id: `${providerType}-${provider.id}`,
+    providerId: provider.id,
     categoryId: category.id,
     categoryName: category.labels,
     title: provider.name,
     description: provider.description || '',
     imageUrl: provider.profile_photo_url || '',
-    detailsHref: `/professionals/${category.id}`,
+    detailsHref: `/professionals/${category.id}/${provider.id}`,
     href: '',
     links: [],
     photos: [],

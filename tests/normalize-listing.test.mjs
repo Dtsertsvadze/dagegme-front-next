@@ -6,6 +6,7 @@ import {
   normalizeLocalizedField,
   normalizeVipCarouselItem,
 } from '../src/features/listings/lib/normalize-listing.mjs'
+import { homeCategories } from '../src/content/home-categories.js'
 
 const photographerCategory = {
   id: 'photographers',
@@ -50,6 +51,11 @@ test('keeps sort_order as data without applying frontend sorting', () => {
     listings.map((listing) => listing.sortOrder),
     [8, 2],
   )
+  assert.equal(listings[0].providerId, 1)
+  assert.equal(
+    listings[0].detailsHref,
+    '/professionals/photographers/1',
+  )
 })
 
 test('builds rental-car titles and gallery photos', () => {
@@ -74,6 +80,22 @@ test('builds rental-car titles and gallery photos', () => {
   assert.equal(listing.sortOrder, null)
 })
 
+test('builds provider detail URLs for every public category', () => {
+  for (const category of homeCategories) {
+    const provider =
+      category.id === 'rental-cars'
+        ? { id: 11, mark: 'Mercedes', model: 'S Class' }
+        : { id: 11, name: 'Provider' }
+    const listing = normalizeListing(category, provider)
+
+    assert.equal(listing.providerId, 11)
+    assert.equal(
+      listing.detailsHref,
+      `/professionals/${category.id}/11`,
+    )
+  }
+})
+
 test('maps VIP providers to their category without changing vip_order', () => {
   const listing = normalizeVipCarouselItem([photographerCategory], {
     provider_type: 'photographer',
@@ -84,6 +106,7 @@ test('maps VIP providers to their category without changing vip_order', () => {
     },
   })
 
-  assert.equal(listing.detailsHref, '/professionals/photographers')
+  assert.equal(listing.providerId, 9)
+  assert.equal(listing.detailsHref, '/professionals/photographers/9')
   assert.equal(listing.vipOrder, 3)
 })

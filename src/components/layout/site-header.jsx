@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { siteCopy } from '../../content/site-copy.js'
+import { localizePath } from '../../i18n/config.js'
 import { THEMES, useAppPreferences } from '../../state/app-preferences.js'
 import { LanguageSelect } from './language-select.jsx'
 import { SiteBrand } from './site-brand.jsx'
@@ -27,7 +28,7 @@ export function SiteHeader() {
 
   return (
     <header className="site-header">
-      <SiteBrand label={copy.brand} />
+      <SiteBrand label={copy.brand} language={language} />
 
       <button
         type="button"
@@ -42,7 +43,7 @@ export function SiteHeader() {
         <span className="menu-toggle__line"></span>
       </button>
 
-      <SiteNav items={copy.nav} />
+      <SiteNav items={copy.nav} language={language} />
 
       <div className="site-controls site-controls--desktop">
           <LanguageSelect
@@ -72,7 +73,7 @@ export function SiteHeader() {
             <Link
               key={item.href}
               className="mobile-menu__link"
-              href={item.href}
+              href={localizePath(item.href, language)}
               onClick={() => setIsMenuOpen(false)}
             >
               {item.label}
