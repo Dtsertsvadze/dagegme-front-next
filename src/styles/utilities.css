@@ -1,0 +1,28 @@
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.route-feedback {
+  margin: clamp(48px, 10vw, 120px) auto;
+  max-width: 720px;
+  text-align: center;
+}
+
+.route-feedback p {
+  margin: 0 0 16px;
+}
+
+.route-feedback button,
+.route-feedback a {
+  color: var(--color-accent-strong);
+  font: inherit;
+  font-weight: 700;
+}

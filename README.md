@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dagegme user frontend
 
-## Getting Started
+The public Dagegme website built with Next.js and the App Router.
 
-First, run the development server:
+## Commands
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- `npm run dev` starts local development.
+- `npm test` runs the dependency-free unit tests.
+- `npm run lint` checks the application with ESLint.
+- `npm run build` creates the production build.
+- `npm start` runs the production server after a build.
+
+## Environment
+
+Copy `.env.example` to `.env.local` when you need a different API:
+
+```env
+API_BASE_URL=http://127.0.0.1:8000/api
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`API_BASE_URL` is server-only. The production fallback is
+`https://api.dagegme.com/api`.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `src/app`: routes, layouts, metadata, loading and error boundaries.
+- `src/components`: reusable UI and layout components.
+- `src/features`: page composition, listing normalization, and server data access.
+- `src/content`: bilingual website content and provider categories.
+- `src/state`: browser preference and wishlist state.
+- `src/styles`: the original visual system, organized by concern.
+- `tests`: fast unit tests for pure business logic.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Provider lists keep the order returned by the API. `sort_order` and
+`vip_order` are not re-sorted in the browser.
