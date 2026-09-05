@@ -20,9 +20,6 @@ export function ListingGrid({
   title: titleOverride,
   className = '',
   seeAllHref = '',
-  activeCategory,
-  onClearFilter,
-  isLoading,
   error,
   language,
 }) {
@@ -30,7 +27,6 @@ export function ListingGrid({
     titleOverride ||
     (language === 'ka' ? 'პროფესიონალები' : 'Professionals')
   const clearLabel = language === 'ka' ? 'ყველას ნახვა' : 'View all'
-  const loadingLabel = language === 'ka' ? 'იტვირთება...' : 'Loading...'
   const emptyLabel =
     language === 'ka'
       ? 'ამ კატეგორიაში ჩანაწერები ჯერ არ არის.'
@@ -158,24 +154,15 @@ export function ListingGrid({
           >
             {clearLabel}
           </Link>
-        ) : activeCategory ? (
-          <button
-            type="button"
-            className="section-heading__action"
-            onClick={onClearFilter}
-          >
-            {clearLabel}
-          </button>
         ) : null}
       </div>
 
-      {isLoading ? <div className="feedback-card">{loadingLabel}</div> : null}
-      {!isLoading && error ? <div className="feedback-card">{error}</div> : null}
-      {!isLoading && !error && items.length === 0 ? (
+      {error ? <div className="feedback-card">{error}</div> : null}
+      {!error && items.length === 0 ? (
         <div className="feedback-card">{emptyLabel}</div>
       ) : null}
 
-      {!isLoading && !error && items.length > 0 ? (
+      {!error && items.length > 0 ? (
         <div className="listing-carousel__frame">
           <button
             type="button"

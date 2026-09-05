@@ -41,9 +41,6 @@ export function ProfessionalsPage({ categories, items, hasError }) {
                 }
                 seeAllHref={`/professionals/${category.id}`}
                 items={categoryItems}
-                activeCategory=""
-                isLoading={false}
-                error=""
                 language={language}
               />
             )

@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import heroImage from '../../assets/hero-event.png'
+import heroImage from '../../assets/hero-event.webp'
 
 export function HeroSection({ titleTop, titleAccent, text }) {
   return (

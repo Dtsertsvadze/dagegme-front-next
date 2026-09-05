@@ -33,3 +33,14 @@ API_BASE_URL=http://127.0.0.1:8000/api
 
 Provider lists keep the order returned by the API. `sort_order` and
 `vip_order` are not re-sorted in the browser.
+
+## Search engine discovery
+
+`/sitemap.xml` includes the home page, directory, categories, and API provider
+pages in Georgian and English, with language alternates. It uses production
+URLs (`https://dagegme.com`) even during local development and revalidates on
+requests after five minutes. API failures are not converted into an incomplete
+sitemap; a failed revalidation retains the previous successful version.
+
+`/robots.txt` allows crawling and advertises the sitemap. After deploying the
+Next.js site, submit `https://dagegme.com/sitemap.xml` in Google Search Console.

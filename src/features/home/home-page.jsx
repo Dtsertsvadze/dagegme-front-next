@@ -25,8 +25,6 @@ export function HomePage({ items, hasError }) {
       <ListingGrid
         items={items}
         seeAllHref="/professionals"
-        activeCategory=""
-        isLoading={false}
         error={hasError ? copy.professionals.error : ''}
         language={language}
       />
