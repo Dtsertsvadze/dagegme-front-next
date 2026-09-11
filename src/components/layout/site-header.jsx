@@ -33,7 +33,7 @@ export function SiteHeader() {
       <button
         type="button"
         className="menu-toggle"
-        aria-label="Toggle navigation menu"
+        aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
         aria-expanded={isMenuOpen}
         aria-controls="mobile-navigation"
         onClick={handleMenuToggle}
@@ -67,43 +67,47 @@ export function SiteHeader() {
       <div
         id="mobile-navigation"
         className={`mobile-menu ${isMenuOpen ? 'mobile-menu--open' : ''}`.trim()}
+        aria-hidden={!isMenuOpen}
+        inert={!isMenuOpen}
       >
-        <nav className="mobile-menu__nav" aria-label="Mobile Primary">
-          {copy.nav.map((item) => (
-            <Link
-              key={item.href}
-              className="mobile-menu__link"
-              href={localizePath(item.href, language)}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <div className="mobile-menu__inner">
+          <nav className="mobile-menu__nav" aria-label="Mobile Primary">
+            {copy.nav.map((item) => (
+              <Link
+                key={item.href}
+                className="mobile-menu__link"
+                href={localizePath(item.href, language)}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
 
-        <div className="mobile-menu__controls">
-          <LanguageSelect
-            className="mobile-menu__language"
-            label={copy.languageLabel}
-            value={language}
-            onChange={handleLanguageChange}
-          />
-          <ThemeToggle
-            className="mobile-menu__theme"
-            label={copy.themeLabel}
-            pressed={isDarkTheme}
-            activeLabel={isDarkTheme ? copy.dark : copy.light}
-            onToggle={toggleTheme}
-          />
-          <WishlistButton
-            className="mobile-menu__wishlist"
-            count={wishlist.length}
-            label={copy.wishlist}
-            onClick={() => {
-              setIsMenuOpen(false)
-              setIsWishlistOpen(true)
-            }}
-          />
+          <div className="mobile-menu__controls">
+            <LanguageSelect
+              className="mobile-menu__language"
+              label={copy.languageLabel}
+              value={language}
+              onChange={handleLanguageChange}
+            />
+            <ThemeToggle
+              className="mobile-menu__theme"
+              label={copy.themeLabel}
+              pressed={isDarkTheme}
+              activeLabel={isDarkTheme ? copy.dark : copy.light}
+              onToggle={toggleTheme}
+            />
+            <WishlistButton
+              className="mobile-menu__wishlist"
+              count={wishlist.length}
+              label={copy.wishlist}
+              onClick={() => {
+                setIsMenuOpen(false)
+                setIsWishlistOpen(true)
+              }}
+            />
+          </div>
         </div>
       </div>
 
