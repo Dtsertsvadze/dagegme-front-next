@@ -28,9 +28,6 @@ export async function generateMetadata({ params }) {
         ka: '/ka',
       },
     },
-    icons: {
-      icon: '/favicon.ico',
-    },
   }
 }
 

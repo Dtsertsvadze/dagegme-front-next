@@ -22,44 +22,12 @@
 }
 
 .brand-mark {
-  position: relative;
-  width: 24px;
-  height: 24px;
-  border-radius: 9px;
-  border: 2px solid var(--color-accent);
-  transform: rotate(-14deg);
-}
-
-.brand-mark::before,
-.brand-mark::after,
-.brand-mark__spark {
-  content: '';
-  position: absolute;
-  border-radius: 999px;
-  background: var(--color-accent);
-}
-
-.brand-mark::before {
-  width: 11px;
-  height: 2px;
-  left: 4px;
-  top: 10px;
-  transform: rotate(22deg);
-}
-
-.brand-mark::after {
-  width: 2px;
-  height: 11px;
-  left: 10px;
-  top: 4px;
-  transform: rotate(22deg);
-}
-
-.brand-mark__spark {
-  width: 5px;
-  height: 5px;
-  right: -3px;
-  top: -3px;
+  display: block;
+  width: 38px;
+  height: auto;
+  border-radius: 7px;
+  flex-shrink: 0;
+  transform: translateY(-1px);
 }
 
 .brand-name {
