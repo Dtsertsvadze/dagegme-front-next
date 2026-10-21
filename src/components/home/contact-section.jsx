@@ -13,7 +13,7 @@ export function ContactSection({ content }) {
         <p className="contact-section__eyebrow">{content.eyebrow}</p>
         <h2>{content.title}</h2>
       </div>
-      <a className="contact-section__phone" href="tel:+995551288483">
+      <a className="contact-section__phone" href="tel:+995555500019">
         <span className="contact-section__phone-icon" aria-hidden="true">
           <PhoneIcon />
         </span>
