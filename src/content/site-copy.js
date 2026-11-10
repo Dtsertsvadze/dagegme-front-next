@@ -66,6 +66,11 @@ export const siteCopy = {
     contact: {
       eyebrow: "Contact",
       title: "Contact us to plan your celebration",
+      phoneLabel: "Call Dagegme at +995 555 50 00 19",
+      emailLabel: "Email Dagegme at dagegme1@gmail.com",
+      socialLabel: "Social media",
+      instagramLabel: "Open Dagegme on Instagram",
+      facebookLabel: "Open Dagegme on Facebook",
     },
     footer: {
       tagline:
@@ -173,6 +178,11 @@ export const siteCopy = {
     contact: {
       eyebrow: "კონტაქტი",
       title: "დაგვიკავშირდით თქვენი დღესასწაულის დასაგეგმად",
+      phoneLabel: "დაურეკეთ დაგეგმეს ნომერზე +995 555 50 00 19",
+      emailLabel: "მისწერეთ დაგეგმეს ელფოსტაზე dagegme1@gmail.com",
+      socialLabel: "სოციალური მედია",
+      instagramLabel: "გახსენით დაგეგმე Instagram-ზე",
+      facebookLabel: "გახსენით დაგეგმე Facebook-ზე",
     },
     footer: {
       tagline:
